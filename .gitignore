@@ -8,7 +8,5 @@ npm-debug.log*
 dist/
 build/
 *.log
-*.claude.*
-
 CLAUDE.md
 reference.md
