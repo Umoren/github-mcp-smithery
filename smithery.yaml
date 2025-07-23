@@ -1,0 +1,46 @@
+runtime: "typescript"
+env:
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+configSchema:
+  type: "object"
+  properties:
+    githubToken:
+      type: "string"
+      description: "GitHub Personal Access Token with repo scope"
+    githubWebhookSecret:
+      type: "string"
+      description: "GitHub webhook secret for verification"
+    openaiApiKey:
+      type: "string"
+      description: "OpenAI API key for issue classification"
+    githubRepoOwner:
+      type: "string"
+      description: "GitHub repository owner username"
+    githubRepoName:
+      type: "string"
+      description: "GitHub repository name"
+    openaiModel:
+      type: "string"
+      description: "OpenAI model to use for classification"
+      default: "gpt-4o"
+    confidenceThreshold:
+      type: "number"
+      description: "Minimum confidence score for auto-labeling (0.0-1.0)"
+      default: 0.75
+      minimum: 0.1
+      maximum: 1.0
+    autoComment:
+      type: "boolean"
+      description: "Enable automatic triage comments on issues"
+      default: true
+    triageLabels:
+      type: "string"
+      description: "Comma-separated list of available classification labels"
+      default: "bug,feature-request,documentation,question,enhancement"
+  required: 
+    - "githubToken"
+    - "githubWebhookSecret" 
+    - "openaiApiKey"
+    - "githubRepoOwner"
+    - "githubRepoName"

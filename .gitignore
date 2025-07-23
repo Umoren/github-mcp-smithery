@@ -1,0 +1,13 @@
+.smithery
+node_modules
+.env
+
+# Secure Project - node patterns
+.DS_Store
+npm-debug.log*
+dist/
+build/
+*.log
+
+CLAUDE.md
+reference.md
