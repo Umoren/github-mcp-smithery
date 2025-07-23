@@ -98,6 +98,7 @@ export interface LogContext {
   repository?: string;
   userId?: string;
   action?: string;
+  [key: string]: any; // Allow additional logging properties
 }
 
 export interface RetryOptions {

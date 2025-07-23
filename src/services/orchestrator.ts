@@ -76,7 +76,7 @@ export class TriageOrchestrator {
           log.warn('Failed to post comment, continuing with triage', {
             correlationId,
             issueNumber: payload.issue.number
-          }, error as Error);
+          });
         }
       }
 
@@ -102,13 +102,9 @@ export class TriageOrchestrator {
       return result;
 
     } catch (error) {
-      triageLog.triageError(payload.issue.number, error as Error, correlationId);
-
-      log.error('Issue triage failed', {
-        correlationId,
-        issueNumber: payload.issue.number,
-        component: 'triage-orchestrator'
-      }, error as Error);
+      if (error instanceof Error) {
+        triageLog.triageError(payload.issue.number, error, correlationId);
+      }
 
       return {
         success: false,

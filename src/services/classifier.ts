@@ -147,7 +147,7 @@ Analyze the issue and provide your classification:`;
     } catch (error) {
       clearTimeout(timeoutId);
 
-      if (error.name === 'AbortError') {
+      if (error instanceof Error && error.name === 'AbortError') {
         throw new TimeoutError('OpenAI API request', this.timeout, { correlationId });
       }
 

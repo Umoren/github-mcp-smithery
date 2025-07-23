@@ -129,7 +129,7 @@ export class GitHubClient {
     } catch (error) {
       clearTimeout(timeoutId);
 
-      if (error.name === 'AbortError') {
+      if (error instanceof Error && error.name === 'AbortError') {
         throw new TimeoutError('GitHub API request', this.timeout, { correlationId });
       }
 
@@ -464,7 +464,7 @@ export class GitHubClient {
     try {
       const response = await this.makeRequest('/rate_limit', { correlationId });
       
-      const { limit, remaining, reset, used } = response.data.rate;
+      const { limit, remaining, reset, used } = (response.data as any).rate;
       
       log.debug('Retrieved rate limit status', {
         correlationId,
