@@ -20,7 +20,7 @@ export const configSchema = z.object({
 });
 
 export default function createStatelessServer({
-  config: _mcpConfig,
+  config: mcpConfig,
 }: {
   config: z.infer<typeof configSchema>;
 }) {
@@ -29,8 +29,15 @@ export default function createStatelessServer({
     version: "1.0.0",
   });
 
-  // Initialize services
-  const orchestrator = new TriageOrchestrator();
+  // Lazy initialization of services - only when configuration is available
+  let orchestrator: TriageOrchestrator | null = null;
+  
+  const getOrchestrator = () => {
+    if (!orchestrator) {
+      orchestrator = new TriageOrchestrator();
+    }
+    return orchestrator;
+  };
 
   // MCP Tools for manual operations
   server.tool(
@@ -72,7 +79,7 @@ export default function createStatelessServer({
           sender: { login: author, id: 1 }
         };
 
-        const result = await orchestrator.triageIssue(mockPayload, correlationId);
+        const result = await getOrchestrator().triageIssue(mockPayload, correlationId);
 
         return {
           content: [
@@ -109,7 +116,7 @@ export default function createStatelessServer({
       const correlationId = generateCorrelationId();
       
       try {
-        const health = await orchestrator.healthCheck(correlationId);
+        const health = await getOrchestrator().healthCheck(correlationId);
         
         return {
           content: [
@@ -209,7 +216,7 @@ export default function createStatelessServer({
         };
 
         // Triage the issue
-        const triageResult = await orchestrator.triageIssue(mockPayload, correlationId);
+        const triageResult = await getOrchestrator().triageIssue(mockPayload, correlationId);
 
         const result = {
           success: true,
