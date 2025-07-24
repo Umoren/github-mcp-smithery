@@ -5,11 +5,18 @@ import { log, generateCorrelationId } from './utils/logger.js';
 import TriageOrchestrator from './services/orchestrator.js';
 import type { GitHubWebhookPayload } from './types/index.js';
 
-// MCP Server configuration schema
+// MCP Server configuration schema (matches smithery.yaml)
 export const configSchema = z.object({
   debug: z.boolean().default(false).describe("Enable debug logging"),
-  githubToken: z.string().optional().describe("GitHub Personal Access Token"),
-  openaiApiKey: z.string().optional().describe("OpenAI API Key"),
+  githubToken: z.string().describe("GitHub Personal Access Token with repo scope"),
+  githubWebhookSecret: z.string().describe("GitHub webhook secret for verification"),
+  openaiApiKey: z.string().describe("OpenAI API key for issue classification"),
+  githubRepoOwner: z.string().describe("GitHub repository owner username"),
+  githubRepoName: z.string().describe("GitHub repository name"),
+  openaiModel: z.string().default("gpt-4o").describe("OpenAI model to use for classification"),
+  confidenceThreshold: z.number().default(0.75).describe("Minimum confidence score for auto-labeling (0.0-1.0)"),
+  autoComment: z.boolean().default(true).describe("Enable automatic triage comments on issues"),
+  triageLabels: z.string().default("bug,feature-request,documentation,question,enhancement").describe("Comma-separated list of available classification labels"),
 });
 
 export default function createStatelessServer({

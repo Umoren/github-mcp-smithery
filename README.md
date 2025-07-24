@@ -1,3 +1,5 @@
+[![smithery badge](https://smithery.ai/badge/@Umoren/auto-triage-github)](https://smithery.ai/server/@Umoren/auto-triage-github)
+
 # GitHub Issue Auto-Triage Agent
 
 A production-ready AI-powered system that automatically classifies and triages GitHub issues using OpenAI's language models and the Model Context Protocol (MCP), orchestrated through Smithery's platform.
